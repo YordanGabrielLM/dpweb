@@ -27,7 +27,7 @@ function validar_form() {
     });
     return;
   }
-  registrarUsuario();
+  //registrarUsuario();
   //alert("procederemos a Registrar");
   //Swal.fire({
   // title: "Registro Exitoso",
@@ -46,27 +46,30 @@ if (document.querySelector("#frm_user")) {
   };
 }
 async function registrarUsuario() {
-try {
+  try {
     //capturar campos  de formulario (HTML)
     const datos = new FormData(frm_user);
     //Enviar datos a controlador
-    let respusta = await fetch(
+    let respuesta = await fetch(
       base_url + "control/UsuarioController.php?tipo=registrar",
       {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
         body: datos,
-      });
-    let json = await respusta.json
+      }
+    );
+    let json = await respuesta.json();
     // Validamos que json.status sea = true
-    if (json.status) {  // true
-       alert(json.msg);
-       document.getElementById('frm_user').reset();
-    }else{
+    if (json.status) {
+      // true
+      alert(json.msg);
+      document.getElementById("frm_user").reset();
+    } else {
       alert(json.msg);
     }
   } catch (e) {
     console.log("Error a registrar Usuario:" + e);
+    
   }
 }
