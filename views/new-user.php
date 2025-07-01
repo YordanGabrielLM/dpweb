@@ -72,63 +72,63 @@
                     <div class="mb-3 row">
                         <label for="nro_identidad" class="col-sm-2 col-form-label">Nro identidad</label>
                         <div class="col-sm-10">
-                            <input type="text" maxlength="11" class="form-control" id="nro_identidad" name="nro_identidad" require>
+                            <input type="text" maxlength="11" class="form-control" id="nro_identidad" name="nro_identidad" required>
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="razon_social" class="col-sm-2 col-form-label">Razón Social</label>
                         <div class="col-sm-10">
-                            <input type="text" maxlength="130" class="form-control" id="razon_social" name="razon_social" require>
+                            <input type="text" maxlength="130" class="form-control" id="razon_social" name="razon_social" required>
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="telefono" class="col-sm-2 col-form-label">Teléfono</label>
                         <div class="col-sm-10">
-                            <input type="text" maxlength="15" class="form-control" id="telefono" name="telefono" require>
+                            <input type="text" maxlength="15" class="form-control" id="telefono" name="telefono" required>
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="correo" class="col-sm-2 col-form-label">Correo</label>
                         <div class="col-sm-10">
-                            <input type="email" maxlength="100" class="form-control" id="correo" name="correo" require>
+                            <input type="email" maxlength="100" class="form-control" id="correo" name="correo" required>
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="departamento" class="col-sm-2 col-form-label">Departamento</label>
                         <div class="col-sm-10">
-                            <input type="text" maxlength="20" class="form-control" id="departamento" name="departamento" require>
+                            <input type="text" maxlength="20" class="form-control" id="departamento" name="departamento" required>
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="provincia" class="col-sm-2 col-form-label">Provincia</label>
                         <div class="col-sm-10">
-                            <input type="text" maxlength="30" class="form-control" id="provincia" name="provincia" require>
+                            <input type="text" maxlength="30" class="form-control" id="provincia" name="provincia" required>
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="distrito" class="col-sm-2 col-form-label">Distrito</label>
                         <div class="col-sm-10">
-                            <input type="text" maxlength="50" class="form-control" id="distrito" name="distrito" require>
+                            <input type="text" maxlength="50" class="form-control" id="distrito" name="distrito" required>
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="cod_postal" class="col-sm-2 col-form-label">Código Postal</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="cod_postal" name="cod_postal" require>
+                            <input type="number" class="form-control" id="cod_postal" name="cod_postal" required>
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="direccion" class="col-sm-2 col-form-label">Dirección</label>
                         <div class="col-sm-10">
-                            <input type="text" maxlength="150" class="form-control" id="direccion" name="direccion" require>
+                            <input type="text" maxlength="150" class="form-control" id="direccion" name="direccion" required>
                         </div>
                     </div>
 

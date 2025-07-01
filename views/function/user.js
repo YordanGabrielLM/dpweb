@@ -27,7 +27,7 @@ function validar_form() {
     });
     return;
   }
-  //registrarUsuario();
+  registrarUsuario();
   //alert("procederemos a Registrar");
   //Swal.fire({
   // title: "Registro Exitoso",

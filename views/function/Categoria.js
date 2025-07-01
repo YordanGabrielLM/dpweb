@@ -21,7 +21,7 @@ async function registrarCategoria() {
     try {
         const datos = new FormData(document.getElementById('frm_categoria'));
 
-        let respuesta = await fetch(bd_url + 'control/categoriaController.php?tipo=registrar', {
+        let respuesta = await fetch(base_url + 'control/CategoriaControl.php?tipo=registrar', {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -29,7 +29,7 @@ async function registrarCategoria() {
         });
 
         let json = await respuesta.json();
-
+        //console.log(json); ///////
         if (json.status) {
             alert(json.msg);
             document.getElementById('frm_categoria').reset();

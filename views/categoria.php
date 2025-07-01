@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Categoria</title>
-    <link rel="stylesheet" href="<?php echo BASE_URL ?>views/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>views/bootstrap/css/bootstrap.min.css">
     <script>
        const base_url = "<?php echo BASE_URL; ?>";
     </script>
@@ -82,7 +82,6 @@
                             <input type="text" class="form-control" id="detalle" name="detalle" required>
                         </div>
                     </div>
-
                     <button type="submit" class="btn btn-success">Registrar</button>
                     <button type="reset" class="btn btn-secondary">Limpiar</button>
                     <button type="button" class="btn btn-danger">Cancelar</button>
@@ -91,7 +90,8 @@
         </div>
     </div>
 
-    <script src="<?php echo BD_URL; ?>view/function/Categoria.js"></script>
+    <script src="<?php echo BASE_URL; ?>views/function/Categoria.js"></script>
     <script src="<?php echo BASE_URL; ?>views/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
