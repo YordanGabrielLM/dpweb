@@ -75,6 +75,9 @@
             50% { transform: translateY(-10px); }
         }
     </style>
+    <script>
+        const base_url = '<?=BASE_URL; ?>';
+    </script>
 </head>
 <body>
 
@@ -84,10 +87,10 @@
     <!-- Formulario de login -->
     <div class="login-box animate__animated animate__fadeInUp">
         <h2>Iniciar Sesión</h2>
-        <form action="validar_login.php" method="POST">
-            <input type="text" name="usuario" placeholder="Usuario" required>
-            <input type="password" name="password" placeholder="Contraseña" required>
-            <button type="submit">Entrar</button>
+        <form action="validar_login.php" method="POST" id="frm_login" name="frm_login">
+            <input type="text" name="usuario" placeholder="Usuario" id="usuario" required>
+            <input type="password" name="password" placeholder="Contraseña" id="password" required>
+            <button type="button" class="btn btn-primary w-100" onclick="iniciar_sesion();">Ingresar</button>
         </form>
     </div>
 
@@ -101,5 +104,6 @@
             path: 'https://assets3.lottiefiles.com/packages/lf20_tno6cg2w.json' // Robot animado
         });
     </script>
+    <script src="<?php echo BASE_URL; ?>views/function/user.js"></script>
 </body>
 </html>

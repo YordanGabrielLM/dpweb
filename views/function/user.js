@@ -8,6 +8,7 @@ function validar_form() {
   let cod_postal = document.getElementById("cod_postal").value;
   let direccion = document.getElementById("direccion").value;
   let rol = document.getElementById("rol").value;
+
   if (
     nro_identidad == "" ||
     razon_social == "" ||
@@ -27,29 +28,22 @@ function validar_form() {
     });
     return;
   }
+
   registrarUsuario();
-  //alert("procederemos a Registrar");
-  //Swal.fire({
-  // title: "Registro Exitoso",
-  // text: "El usuario ha sido registrado con éxito",
-  // icon: "success",
-  // confirmButtonText: "Aceptar",
-  // });
 }
 
 if (document.querySelector("#frm_user")) {
-  //Evita que se envie el formulario
   let frm_user = document.querySelector("#frm_user");
   frm_user.onsubmit = function (e) {
     e.preventDefault();
     validar_form();
   };
 }
+
 async function registrarUsuario() {
   try {
-    //capturar campos  de formulario (HTML)
-    const datos = new FormData(frm_user);
-    //Enviar datos a controlador
+    const datos = new FormData(document.querySelector("#frm_user"));
+
     let respuesta = await fetch(
       base_url + "control/UsuarioController.php?tipo=registrar",
       {
@@ -59,10 +53,10 @@ async function registrarUsuario() {
         body: datos,
       }
     );
+
     let json = await respuesta.json();
-    // Validamos que json.status sea = true
+
     if (json.status) {
-      // true
       alert(json.msg);
       document.getElementById("frm_user").reset();
     } else {
@@ -70,6 +64,28 @@ async function registrarUsuario() {
     }
   } catch (e) {
     console.log("Error a registrar Usuario:" + e);
-    
+  }
+}
+
+
+async function iniciar_sesion() {
+  let usuario = document.getElementById("usuario").value;
+  let password = document.getElementById("password").value;
+
+  if (usuario == "" || password == "") {
+    alert("ERROR, CAMPOS VACÍOS!");
+    return;
+  }
+
+  try {
+    const datos = new FormData(document.querySelector("#frm_login"));
+    let respuesta = await fetch(base_url+'control/UsuarioController.php?tipo=iniciar_sesion',{
+         method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        body: datos,
+    });
+  } catch (error) {
+    console.log(error);
   }
 }
