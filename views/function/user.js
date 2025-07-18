@@ -97,3 +97,19 @@ async function iniciar_sesion() {
     console.log(error);
   }
 }
+  
+async function views_users(){
+try {
+  let respuesta = await fetch(base_url+'control/UsuarioController.php?tipo=ver_usuarios',{
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+    });
+} catch (error) {
+  
+}
+}
+if (document.getElementById('content_users')) {
+  views_users();
+}
+
