@@ -26,7 +26,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="<?= BASE_URL ?>users">Users</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item"> 
                         <a class="nav-link" href="#">Products</a>
                     </li>
                     <li class="nav-item">

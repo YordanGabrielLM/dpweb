@@ -98,18 +98,50 @@ async function iniciar_sesion() {
   }
 }
   
-async function views_users(){
-try {
-  let respuesta = await fetch(base_url+'control/UsuarioController.php?tipo=ver_usuarios',{
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-    });
-} catch (error) {
-  
+async function views_users() {
+  try {
+    const resp = await fetch(`${base_url}control/UsuarioController.php?tipo=ver_usuarios`);
+    if (!resp.ok) throw new Error(`Error HTTP: ${resp.status}`);
+
+    const usuarios = await resp.json();
+    renderUsers(usuarios);
+  } catch (error) {
+    console.error('Error al cargar usuarios:', error);
+    document.getElementById('content_users').innerHTML = `<tr><td colspan="6" class="text-center text-danger">Error al cargar datos</td></tr>`;
+  }
 }
+
+function renderUsers(lista) {
+  const tbody = document.getElementById('content_users');
+  if (!tbody) return;
+
+  tbody.innerHTML = ''; // Limpiar contenido anterior
+
+  if (!Array.isArray(lista) || lista.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center">No hay usuarios.</td></tr>`;
+    return;
+  }
+
+  lista.forEach((u, index) => {
+    tbody.innerHTML += `
+      <tr>
+        <td class="text-center">${index + 1}</td>
+        <td class="text-center">${u.nro_identidad}</td>
+        <td class="text-center">${u.razon_social}</td>
+        <td class="text-center">${u.correo}</td>
+        <td class="text-center">${u.rol}</td>
+        <td class="text-center">${u.estado}</td>
+        <td>
+          <a href="'+ base_url+'edit_user/+usuarios.id'+'">Editar</a>
+        </td>
+
+      </tr>
+    `;
+  });
 }
+
 if (document.getElementById('content_users')) {
   views_users();
 }
+
 
