@@ -1,5 +1,8 @@
 <div class="container">
     <h4 class="mt-3 mb-3">Lista de Usuarios</h4>
+    <button type="button" class="btn btn-success" onclick="nuevoUsuario()">
+            + Agrergar Usuario
+        </button>
 <table class="table table-striped-columns">
     <thead>
         <tr>
