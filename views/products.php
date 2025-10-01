@@ -7,10 +7,13 @@
         <thead>
             <tr>
                 <th>Nro</th>
-                <th>Codigo</th>
+                <th>Código</th>
                 <th>Nombre</th>
+                <th>Detalle</th>
                 <th>Precio</th>
-                <th>Fecha Vencimiento</th>
+                <th>Stock</th>
+                <th>Categoria</th>
+                <th>F.V.</th>
                 <th>Acciones</th>
             </tr>
         </thead>

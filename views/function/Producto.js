@@ -1,20 +1,18 @@
 function validar_form(tipo) {
-    let codigo  = document.getElementById("codigo").value;
+    let codigo = document.getElementById("codigo").value;
     let nombre = document.getElementById("nombre").value;
     let detalle = document.getElementById("detalle").value;
     let precio = document.getElementById("precio").value;
     let stock = document.getElementById("stock").value;
-    let id_categoria  = document.getElementById("id_categoria").value;
+    let id_categoria = document.getElementById("id_categoria").value;
+    let id_proveedor = document.getElementById("id_proveedor").value;
     let fecha_vencimiento = document.getElementById("fecha_vencimiento").value;
-    
-
-    if (codigo=="" || nombre=="" || detalle=="" || precio=="" || stock=="" || id_categoria=="" || fecha_vencimiento=="") {
-       
-         Swal.fire({
-            icon: 'warning',
-            title: 'Campos vacíos',
-            text: 'Por favor, complete todos los campos requeridos',
-            confirmButtonText: 'Entendido'
+    let imagen = document.getElementById("imagen").value;
+    if (codigo == "" || nombre == "" || detalle == "" || precio == "" || stock == "" || id_categoria == "" || fecha_vencimiento == "" || imagen == "" || id_proveedor == "") {
+        Swal.fire({
+            title: "error campos vacios!",
+            icon: "error",
+            draggable: true
         });
         return;
     }
@@ -24,7 +22,9 @@ function validar_form(tipo) {
     if (tipo == "actualizar") {
         actualizarProducto();
     }
+
 }
+
 
 if(document.querySelector('#frm_product')){
     //evita que se envie el formulario
@@ -93,10 +93,13 @@ async function view_producto() {
             json.forEach((producto, index) => {
                 html += `<tr>
                     <td>${index + 1}</td>
-                    <td>${producto.codigo || ''}</td>
-                    <td>${producto.nombre || ''}</td>
-                    <td>${producto.precio || ''}</td>
-                    <td>${producto.fecha_vencimiento || ''}</td>
+                    <td>${producto.codigo}</td>
+                            <td>${producto.nombre}</td>
+                            <td>${producto.detalle}</td>
+                            <td>${producto.precio}</td>
+                            <td>${producto.stock}</td>
+                            <td>${producto.categoria}</td>
+                            <td>${producto.fecha_vencimiento}</td>
                     <td>
                         <a href="`+ base_url + `edit-products/` + producto.id + `" class="btn btn-primary">Editar</a>
                         <button onclick="eliminar(` + producto.id + `)" class="btn btn-danger">Eliminar</button>
@@ -235,3 +238,34 @@ function nuevoProducto() {
   // Redirige al formulario de registro de productos
   window.location.href = base_url + "new-products"; 
 }
+async function cargar_categorias() {
+    let respuesta = await fetch(base_url + 'control/categoriaController.php?tipo=ver_categorias', {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache'
+    });
+    let json = await respuesta.json();
+    let contenido = '<option value="">Seleccione una categoría</option>';
+    json.data.forEach(categoria => {
+        contenido += `<option value="${categoria.id}">${categoria.nombre}</option>`;
+    });
+    //console.log(contenido);
+    document.getElementById('id_categoria').innerHTML = contenido;
+}
+
+
+async function cargar_proveedores() {
+    let respuesta = await fetch(base_url + 'control/UsuarioController.php?tipo=ver_proveedores', {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache'
+    });
+    let json = await respuesta.json();
+    let contenido = '<option value="">Seleccione un proveedor</option>';
+    json.data.forEach(proveedor => {
+        contenido += `<option value="${proveedor.id}">${proveedor.razon_social}</option>`;
+    });
+    document.getElementById('id_proveedor').innerHTML = contenido;
+}
+
+        

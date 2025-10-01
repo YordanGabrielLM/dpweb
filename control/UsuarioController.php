@@ -141,3 +141,13 @@ if ($tipo=="eliminar") {
     echo json_encode($respuesta);
     exit;
 }
+if ($tipo == "ver_proveedores") {
+    $proveedores = $objPersona->verProveedores();
+    if (count($proveedores) > 0) {
+        $respuesta = array('status' => true, 'data' => $proveedores);
+    } else {
+        $respuesta = array('status' => false, 'msg' => 'No hay proveedores');
+    }
+    echo json_encode($respuesta);
+    exit;
+}
