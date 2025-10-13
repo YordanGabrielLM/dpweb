@@ -1,7 +1,7 @@
 <div class="container">
-    <h4 class="mt-3 mb-3">Lista de Usuarios</h4>
-    <button type="button" class="btn btn-success" onclick="nuevoUsuario()">
-            + Agregar Usuario
+    <h4 class="mt-3 mb-3">Lista de Clientes</h4>
+    <button type="button" class="btn btn-success" onclick="nuevoCliente()">
+            + Agregar Cliente
         </button>
 <table class="table table-striped-columns">
     <thead>
@@ -16,9 +16,9 @@
 
         </tr>
     </thead>
-    <tbody id="content_users">
+    <tbody id="content_clientes">
         
     </tbody>
 </table>
 </div>
-<script src="<?= BASE_URL ?>views/function/user.js"></script>
+<script src="<?= BASE_URL ?>views/function/clientes.js"></script>

@@ -30,7 +30,7 @@ if ($tipo == "registrar") {
         } else {
             $respuesta = $objPersona->registrar($nro_identidad, $razon_social, $telefono, $correo, $departamento, $provincia, $distrito, $cod_postal, $direccion, $rol, $password);
             if ($respuesta) {
-                $arrResponse = array('status' => true, 'msg' => 'Registrando correctamente');
+                $arrResponse = array('status' => true, 'msg' => 'Registrado correctamente');
             } else {
                 $arrResponse = array('status' => false, 'msg' => 'Error, fallo en registro');
             }
@@ -149,5 +149,15 @@ if ($tipo == "ver_proveedores") {
         $respuesta = array('status' => false, 'msg' => 'No hay proveedores');
     }
     echo json_encode($respuesta);
+    exit;
+}
+if ($tipo == "ver_clientes") {
+    $clientes = $objPersona->verClientes();
+    echo json_encode($clientes);
+    exit;
+}
+if ($tipo == "ver_proveedor") {
+    $proveedor = $objPersona->verProveedor();
+    echo json_encode($proveedor);
     exit;
 }

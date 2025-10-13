@@ -33,7 +33,10 @@
                         <a class="nav-link" href="<?= BASE_URL ?>new-categoria">Categories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Clients</a>
+                        <a class="nav-link" href="<?= BASE_URL ?>clientes">Clients</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= BASE_URL ?>proveedor">Proveedores</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Shops</a>

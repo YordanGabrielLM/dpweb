@@ -30,26 +30,26 @@ function validar_form(tipo) {
   }
 
   if (tipo== "nuevo") {
-    registrarUsuario();
+    registrarProveedor();
   }
   if (tipo== "actualizar") {
-    actualizarUsuario();
+    actualizarProveedor();
   }
   
 }
 
-if (document.querySelector("#frm_user")) {
+if (document.querySelector("#frm_proveedor")) {
   // Evita que se envie el formulario
-  let frm_user = document.querySelector("#frm_user");
+  let frm_user = document.querySelector("#frm_proveedor");
   frm_user.onsubmit = function (e) {
     e.preventDefault();
     validar_form("nuevo");
   };
 }
 
-async function registrarUsuario() {
+async function registrarProveedor() {
   try {
-    const datos = new FormData(document.querySelector("#frm_user"));
+    const datos = new FormData(document.querySelector("#frm_proveedor"));
 
     let respuesta = await fetch(
       base_url + "control/UsuarioController.php?tipo=registrar",
@@ -65,7 +65,7 @@ async function registrarUsuario() {
 
     if (json.status) {
       alert(json.msg);
-      document.getElementById("frm_user").reset();
+      document.getElementById("frm_proveedor").reset();
     } else {
       alert(json.msg);
     }
@@ -96,7 +96,7 @@ async function iniciar_sesion() {
     let json = await respuesta.json();
     // Validamos que json.status sea=true
     if (json.status) { // true
-      location.replace(base_url + 'new-user');
+      location.replace(base_url + 'new-proveedor');
     } else {
       alert(json.msg);
     }
@@ -105,10 +105,10 @@ async function iniciar_sesion() {
   }
 }
 
-async function view_users() {
+async function view_proveedor() {
   try {
     let respuesta = await fetch(
-      base_url + "control/UsuarioController.php?tipo=ver_usuarios",
+      base_url + "control/UsuarioController.php?tipo=ver_proveedor",
       {
         method: "POST",
         mode: "cors",
@@ -127,28 +127,28 @@ async function view_users() {
                     <td>${user.rol}</td> 
                     <td>${user.estado}</td>
                     <td>
-                    <a href="${base_url}edit-user/${user.id}" class="btn btn-primary btn-sm">Editar</a>
-                    <button onclick="eliminarUsuario(${user.id})" class="btn btn-danger btn-sm">Eliminar</button>
+                    <a href="${base_url}edit-proveedor/${user.id}" class="btn btn-primary btn-sm">Editar</a>
+                    <button onclick="eliminarProveedor(${user.id})" class="btn btn-danger btn-sm">Eliminar</button>
                     </td>
                     </tr>`;
       });
-      document.getElementById("content_users").innerHTML = html;
+      document.getElementById("content_proveedor").innerHTML = html;
     } else {
-      document.getElementById("content_users").innerHTML =
-        '<tr><td colspan="6">No hay usuarios disponibles</td></tr>';
+      document.getElementById("content_proveedor").innerHTML =
+        '<tr><td colspan="6">No hay clientes disponibles</td></tr>';
     }
   } catch (error) {
     console.log(error);
-    document.getElementById("content_users").innerHTML =
-      '<tr><td colspan="6">Error al cargar los usuarios</td></tr>';
+    document.getElementById("content_proveedor").innerHTML =
+      '<tr><td colspan="6">Error al cargar los Clientes</td></tr>';
   }
 }
 
-if (document.getElementById("content_users")) {
-  view_users();
+if (document.getElementById("content_proveedor")) {
+  view_proveedor();
 }
 
-async function edit_user() {
+async function edit_proveedor() {
   try {
     let id_persona = document.getElementById('id_persona').value;
     const datos = new FormData();
@@ -184,17 +184,17 @@ async function edit_user() {
     console.log('oops, ocurrio un error' + error);
   }
 }
-if (document.querySelector("#frm_edit_user")) {
+if (document.querySelector("#frm_edit_proveedor")) {
   // evita que se envie el formulario
-  let frm_user = document.querySelector("#frm_edit_user");
+  let frm_user = document.querySelector("#frm_edit_proveedor");
   frm_user.onsubmit = function (e) {
     e.preventDefault();
     validar_form("actualizar");
   }
 }
 
-async function actualizarUsuario() {
-  const datos = new FormData(frm_edit_user);
+async function actualizarProveedor() {
+  const datos = new FormData(frm_edit_proveedor);
   let respuesta = await fetch(base_url + 'control/UsuarioController.php?tipo=actualizar', {
       method: "POST",
       mode: "cors",
@@ -212,7 +212,7 @@ async function actualizarUsuario() {
     
 }
 
-async function eliminarUsuario(id_persona) {
+async function eliminarProveedor(id_persona) {
     // Confirmar eliminación
     const confirmacion = await Swal.fire({
         title: '¿Estás seguro?',
@@ -249,7 +249,7 @@ async function eliminarUsuario(id_persona) {
                     icon: 'success'
                 });
                 // Recargar la lista de usuarios
-                view_users();
+                view_proveedor();
             } else {
                 Swal.fire({
                     title: 'Error',
@@ -267,7 +267,7 @@ async function eliminarUsuario(id_persona) {
         }
     }
 }
-function nuevoUsuario() {
+function nuevoProveedor() {
   // Redirige al formulario de registro de productos
-  window.location.href = base_url + "new-user"; 
+  window.location.href = base_url + "new-proveedor"; 
 }

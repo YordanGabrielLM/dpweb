@@ -40,6 +40,7 @@ async function view_categorias() {
     console.log("error en mostrar categoria " + error);
   }
 }
+
 if (document.getElementById("content_categorias")) {
   view_categorias();
 }
@@ -49,8 +50,8 @@ function validar_form(tipo) {
   let detalle = document.getElementById("detalle").value;
   if (nombre == "" || detalle == "") {
     Swal.fire({
-      title: "Error campos vacios!",
-      icon: "Error",
+      title: "Error, campos vacíos!",
+      icon: "error",
       draggable: true,
     });
     return;
@@ -71,6 +72,7 @@ if (document.querySelector("#frm_categorie")) {
     validar_form("nuevo");
   };
 }
+
 async function registrarCategoria() {
   try {
     //capturar campos de formulario (HTML)
@@ -125,6 +127,7 @@ async function edit_categoria() {
     console.log("oops, ocurrió un error " + error);
   }
 }
+
 if (document.querySelector("#frm_edit_categorie")) {
   edit_categoria();
   // evita que se envie el formulario
@@ -136,23 +139,28 @@ if (document.querySelector("#frm_edit_categorie")) {
 }
 
 async function actualizarCategoria() {
-  const datos = new FormData(frm_edit_category);
-  let respuesta = await fetch(
-    base_url + "control/categoriaController.php?tipo=actualizar",
-    {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      body: datos,
+  try {
+    const datos = new FormData(document.querySelector("#frm_edit_categorie"));
+    let respuesta = await fetch(
+      base_url + "control/categoriaController.php?tipo=actualizar",
+      {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        body: datos,
+      }
+    );
+    json = await respuesta.json();
+    if (!json.status) {
+      alert("Oooooops, ocurrio un error al actualizar, intentelo nuevamente");
+      console.log(json.msg);
+      return;
+    } else {
+      alert(json.msg);
+      location.replace(base_url + "categoria-lista");
     }
-  );
-  json = await respuesta.json();
-  if (!json.status) {
-    alert("Oooooops, ocurrio un error al actualizar, intentelo nuevamente");
-    console.log(json.msg);
-    return;
-  } else {
-    alert(json.msg);
+  } catch (e) {
+    console.log("Error al actualizar Categoria:" + e);
   }
 }
 
@@ -161,6 +169,7 @@ async function fn_eliminar(id) {
     eliminar(id);
   }
 }
+
 async function eliminar(id) {
   let datos = new FormData();
   datos.append("id_categoria", id);
