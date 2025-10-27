@@ -1,6 +1,6 @@
 <!-- inicio de cuerpo de pagina -->
 <div class="container-fluid">
-    <div class="card">
+    <div class="card shadow-sm">
         <div class="card-header">
             Registrar Producto
         </div>
@@ -28,7 +28,7 @@
                 <div class="mb-3 row">
                     <label for="precio" class="col-sm-2 col-form-label">precio</label>
                     <div class="col-sm-10">
-                        <input type="decimal" class="form-control" id="precio" name="precio" required>
+                        <input type="number" step="0.01" class="form-control" id="precio" name="precio" required>
                     </div>
                 </div>
                 <div class="mb-3 row">

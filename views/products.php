@@ -3,7 +3,7 @@
     <button type="button" class="btn btn-success" onclick="nuevoProducto()">
             + Nuevo Producto
         </button>
-    <table class="table table-striped-columns">
+    <table class="table table-striped table-hover table-bordered">
         <thead>
             <tr>
                 <th>Nro</th>

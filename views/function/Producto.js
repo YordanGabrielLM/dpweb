@@ -8,18 +8,22 @@ function validar_form(tipo) {
     let id_proveedor = document.getElementById("id_proveedor").value;
     let fecha_vencimiento = document.getElementById("fecha_vencimiento").value;
     let imagen = document.getElementById("imagen").value;
-    if (codigo == "" || nombre == "" || detalle == "" || precio == "" || stock == "" || id_categoria == "" || fecha_vencimiento == "" || imagen == "" || id_proveedor == "") {
+    let camposRequeridos = [codigo, nombre, detalle, precio, stock, id_categoria, fecha_vencimiento, id_proveedor];
+    if (tipo === "nuevo") {
+        camposRequeridos.push(imagen);
+    }
+    if (camposRequeridos.some(campo => campo === "")) {
         Swal.fire({
-            title: "error campos vacios!",
+            title: "Error: campos vacíos!",
             icon: "error",
             draggable: true
         });
         return;
     }
-    if (tipo == "nuevo") {
+    if (tipo === "nuevo") {
         registrarProducto();
     }
-    if (tipo == "actualizar") {
+    if (tipo === "actualizar") {
         actualizarProducto();
     }
 
@@ -141,17 +145,38 @@ async function edit_producto() {
             });
             return;
         }
+        // Set simple fields first
         document.getElementById('codigo').value = json.data.codigo;
         document.getElementById('nombre').value = json.data.nombre;
         document.getElementById('detalle').value = json.data.detalle;
         document.getElementById('precio').value = json.data.precio;
         document.getElementById('stock').value = json.data.stock;
-        document.getElementById('id_categoria').value = json.data.id_categoria ;
         document.getElementById('fecha_vencimiento').value = json.data.fecha_vencimiento;
+        document.getElementById('imagen_actual').value = json.data.imagen;
+
+        // Load categories and set selected
+        await cargar_categorias();
+        document.getElementById('id_categoria').value = json.data.id_categoria;
+
+        // Load providers and set selected
+        await cargar_proveedores();
+        document.getElementById('id_proveedor').value = json.data.id_proveedor;
+
+        // Display current image if exists
+        if (json.data.imagen && json.data.imagen.trim() !== '') {
+            let imgContainer = document.getElementById('imagen_container');
+            if (!imgContainer) {
+                imgContainer = document.createElement('div');
+                imgContainer.id = 'imagen_container';
+                imgContainer.innerHTML = '<label>Imagen Actual:</label><br>';
+                document.getElementById('imagen').parentNode.insertBefore(imgContainer, document.getElementById('imagen'));
+            }
+            imgContainer.innerHTML = '<label>Imagen Actual:</label><br><img src="' + base_url + json.data.imagen + '" alt="Imagen actual" style="max-width: 200px; max-height: 200px;"><br>';
+        }
 
     } catch (error) {
-        console.log('oops, ocurrio un error' + error);  
-    } 
+        console.log('oops, ocurrio un error' + error);
+    }
 }
 
 if (document.querySelector("#frm_edit_producto")) {

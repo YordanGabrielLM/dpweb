@@ -184,7 +184,7 @@ async function edit_clientes() {
     console.log('oops, ocurrio un error' + error);
   }
 }
-if (document.querySelector("#frm_edit_user")) {
+if (document.querySelector("#frm_edit_cliente")) {
   // evita que se envie el formulario
   let frm_user = document.querySelector("#frm_edit_cliente");
   frm_user.onsubmit = function (e) {

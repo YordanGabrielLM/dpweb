@@ -1,6 +1,6 @@
 <!-- Inicio de cuerpo de Página -->
     <div class="container-fluid">
-        <div class="card">
+        <div class="card shadow-sm">
             <h5 class="card-header">Registro de Proveedores</h5>
             <form id="frm_proveedor" action="" method="">
                 <div class="card-body">

@@ -1,7 +1,7 @@
 
 <!-- Inicio de cuerpo de Página -->
     <div class="container-fluid">
-        <div class="card">
+        <div class="card shadow-sm">
             <h5 class="card-header">Editar Datos de Usuario</h5>
             <?php
             if (isset($_GET["views"])) {

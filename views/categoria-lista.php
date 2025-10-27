@@ -1,6 +1,6 @@
 <div class="container">
     <h5 class="mt-3 text-center">Lista de Categorias</h5>
-    <table class="table table-striped-columns">
+    <table class="table table-striped table-hover table-bordered">
         <thead>
             <tr>
                 <th>Nro</th>

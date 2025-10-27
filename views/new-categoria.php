@@ -1,7 +1,7 @@
 
     <!-- inicio de cuerpo de pagina -->
     <div class="container" style="margin-top: 100px;">
-        <div class="card">
+        <div class="card shadow-sm">
             <div class="card-header" style="text-align:center;">
                 Registrar Categoria
             </div>
