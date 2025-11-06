@@ -1,35 +1,3 @@
-<?php
-// 🔐 CÓDIGO DE LOGOUT - Agregar al INICIO
-require_once "./config/config.php";
-
-// Manejar cierre de sesión
-if (isset($_GET['logout']) && $_GET['logout'] == 'true') {
-    // Verificar si la sesión no está activa antes de iniciarla
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-    
-    // Limpiar todas las variables de sesión
-    $_SESSION = array();
-    
-    // Destruir la sesión
-    session_destroy();
-    
-    // Redirigir al login
-    header('Location: ' . BASE_URL . 'login.php');
-    exit;
-}
-
-// Si ya está logueado, redirigir al dashboard
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-if (isset($_SESSION['ventas_id']) && isset($_SESSION['ventas_usuario'])) {
-    header('Location: ' . BASE_URL . 'dashboard');
-    exit;
-}
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -40,39 +8,51 @@ if (isset($_SESSION['ventas_id']) && isset($_SESSION['ventas_usuario'])) {
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Lottie CDN -->
-    <script src="<?php echo BASE_URL ?>views/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Lottie CDN (de tu código) -->
+    <script src="https://unpkg.com/lottie-web@5.7.4/build/player/lottie.min.js"></script>
 
-    <!-- Google Font: Inter -->
+    <!-- Google Font: Inter (para una tipografía más limpia) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        /* Usamos Inter como fuente principal */
         body {
             font-family: 'Inter', sans-serif;
         }
+
+        /* Mantenemos tu animación de "flotar" original */
         #robot-container {
             animation: flotar 3s ease-in-out infinite;
         }
+
         @keyframes flotar {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
     </style>
     
+    <!-- Variable base_url (de tu código) -->
     <script>
         const base_url = '<?=BASE_URL; ?>';
     </script>
 </head>
 <body class="bg-gray-100 flex flex-col justify-center items-center min-h-screen p-4">
 
+    <!-- Animación Lottie del robot (mantenemos tu ID y tamaño) -->
     <div id="robot-container" class="w-[150px] h-[150px] mb-5"></div>
 
+    <!-- Formulario de login (rediseñado con Tailwind) -->
     <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm">
+        
         <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Iniciar Sesión</h2>
+        
+        <!-- Este es un buen lugar para que tu user.js muestre mensajes de error -->
+        <!-- <div id="message-box" class="hidden text-red-600 text-sm text-center mb-4"></div> -->
 
-        <form id="frm_login" name="frm_login">
+        <form action="validar_login.php" method="POST" id="frm_login" name="frm_login">
+            
             <input 
                 type="text" 
                 name="usuario" 
@@ -98,16 +78,19 @@ if (isset($_SESSION['ventas_id']) && isset($_SESSION['ventas_usuario'])) {
         </form>
     </div>
 
+    <!-- Script para cargar animación de robot (de tu código) -->
     <script>
         lottie.loadAnimation({
             container: document.getElementById('robot-container'),
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            path: 'https://assets3.lottiefiles.com/packages/lf20_tno6cg2w.json'
+            path: 'https://assets3.lottiefiles.com/packages/lf20_tno6cg2w.json' // Robot animado
         });
     </script>
     
+    <!-- Script de tu lógica (de tu código) -->
     <script src="<?php echo BASE_URL; ?>views/function/user.js"></script>
+    
 </body>
 </html>
