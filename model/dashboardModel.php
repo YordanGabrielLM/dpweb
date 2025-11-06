@@ -1,76 +1,61 @@
 <?php
-// model/DashboardModel.php
-require_once(__DIR__ . "/../library/conexion.php");
+require_once("../library/conexion.php");
 
-class DashboardModel {
+class DashboardModel
+{
     private $conexion;
-    
-    function __construct() {
+
+    public function __construct()
+    {
         $this->conexion = new Conexion();
         $this->conexion = $this->conexion->connect();
     }
-    
-    public function getEstadisticas() {
-        $estadisticas = array();
 
-        try {
-            // Total de productos
-            $sql = $this->conexion->query("SELECT COUNT(*) as total FROM producto");
-            $estadisticas['total_productos'] = $sql->fetch_object()->total ?? 0;
+    // 🔹 Estadísticas generales del sistema
+    public function obtenerEstadisticas()
+    {
+        $data = [];
 
-            // Total de usuarios (excluyendo clientes y proveedores)
-            $sql = $this->conexion->query("SELECT COUNT(*) as total FROM persona WHERE rol!='Cliente' AND rol!='Proveedor'");
-            $estadisticas['total_usuarios'] = $sql->fetch_object()->total ?? 0;
+        // Total de productos
+        $sql = $this->conexion->query("SELECT COUNT(*) AS total FROM producto");
+        $data['productos'] = $sql ? $sql->fetch_object()->total : 0;
 
-            // Total de clientes
-            $sql = $this->conexion->query("SELECT COUNT(*) as total FROM persona WHERE rol='Cliente'");
-            $estadisticas['total_clientes'] = $sql->fetch_object()->total ?? 0;
+        // Total de categorías
+        $sql = $this->conexion->query("SELECT COUNT(*) AS total FROM categoria");
+        $data['categorias'] = $sql ? $sql->fetch_object()->total : 0;
 
-            // Total de proveedores
-            $sql = $this->conexion->query("SELECT COUNT(*) as total FROM persona WHERE rol='Proveedor'");
-            $estadisticas['total_proveedores'] = $sql->fetch_object()->total ?? 0;
+        // Total de proveedores (si existe tabla)
+        $sql = $this->conexion->query("SELECT COUNT(*) AS total FROM proveedor");
+        $data['proveedores'] = $sql ? $sql->fetch_object()->total : 0;
 
-            // Productos con stock bajo (menos de 10)
-            $sql = $this->conexion->query("SELECT COUNT(*) as total FROM producto WHERE stock < 10");
-            $estadisticas['stock_bajo'] = $sql->fetch_object()->total ?? 0;
+        // Total de usuarios (si existe tabla)
+        $sql = $this->conexion->query("SELECT COUNT(*) AS total FROM usuario");
+        $data['usuarios'] = $sql ? $sql->fetch_object()->total : 0;
 
-        } catch (Exception $e) {
-            $estadisticas = ["error" => $e->getMessage()];
-        }
+        // Total de ventas (si existe tabla)
+        $sql = $this->conexion->query("SELECT COUNT(*) AS total FROM venta");
+        $data['ventas'] = $sql ? $sql->fetch_object()->total : 0;
 
-        return $estadisticas;
+        return ['status' => true, 'data' => $data];
     }
-    
-    public function getProductosRecientes() {
-        $productos = array();
-        try {
-            $sql = $this->conexion->query("
-                SELECT p.*, per.razon_social as proveedor 
-                FROM producto p 
-                LEFT JOIN persona per ON p.id_proveedor = per.id 
-                ORDER BY p.id DESC LIMIT 5
-            ");
-            while ($obj = $sql->fetch_object()) {
-                $productos[] = $obj;
+
+    // 🔹 Productos con bajo stock (por debajo de 5 unidades, puedes ajustar)
+    public function productosStockBajo()
+    {
+        $arr = [];
+        $sql = $this->conexion->query("
+            SELECT p.id, p.codigo, p.nombre, p.stock, c.nombre AS categoria
+            FROM producto p
+            LEFT JOIN categoria c ON p.id_categoria = c.id
+            WHERE p.stock <= 5
+            ORDER BY p.stock ASC
+            LIMIT 10
+        ");
+        if ($sql) {
+            while ($row = $sql->fetch_object()) {
+                $arr[] = $row;
             }
-        } catch (Exception $e) {
-            $productos = ["error" => $e->getMessage()];
         }
-        return $productos;
-    }
-    
-    public function getProductosStockBajo() {
-        $productos = array();
-        try {
-            $sql = $this->conexion->query("
-                SELECT * FROM producto WHERE stock < 10 ORDER BY stock ASC LIMIT 5
-            ");
-            while ($obj = $sql->fetch_object()) {
-                $productos[] = $obj;
-            }
-        } catch (Exception $e) {
-            $productos = ["error" => $e->getMessage()];
-        }
-        return $productos;
+        return ['status' => true, 'data' => $arr];
     }
 }
