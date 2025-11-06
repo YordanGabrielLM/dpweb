@@ -153,22 +153,22 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3 col-sm-6 mb-2">
-                            <a href="<?= BASE_URL ?>?views=new-products" class="btn btn-outline-primary w-100">
+                            <a href="<?= BASE_URL ?>new-products" class="btn btn-outline-primary w-100">
                                 <i class="fas fa-plus me-1"></i> Nuevo Producto
                             </a>
                         </div>
                         <div class="col-md-3 col-sm-6 mb-2">
-                            <a href="<?= BASE_URL ?>?views=new-user" class="btn btn-outline-success w-100">
+                            <a href="<?= BASE_URL ?>new-user" class="btn btn-outline-success w-100">
                                 <i class="fas fa-user-plus me-1"></i> Nuevo Usuario
                             </a>
                         </div>
                         <div class="col-md-3 col-sm-6 mb-2">
-                            <a href="<?= BASE_URL ?>?views=products" class="btn btn-outline-info w-100">
+                            <a href="<?= BASE_URL ?>products" class="btn btn-outline-info w-100">
                                 <i class="fas fa-list me-1"></i> Ver Productos
                             </a>
                         </div>
                         <div class="col-md-3 col-sm-6 mb-2">
-                            <a href="<?= BASE_URL ?>?views=users" class="btn btn-outline-warning w-100">
+                            <a href="<?= BASE_URL ?>users" class="btn btn-outline-warning w-100">
                                 <i class="fas fa-users me-1"></i> Ver Usuarios
                             </a>
                         </div>
