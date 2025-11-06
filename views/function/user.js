@@ -96,7 +96,7 @@ async function iniciar_sesion() {
     let json = await respuesta.json();
     // Validamos que json.status sea=true
     if (json.status) { // true
-      location.replace(base_url + 'new-user');
+      location.replace(base_url + 'dashboard');
     } else {
       alert(json.msg);
     }
