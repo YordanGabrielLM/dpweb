@@ -85,7 +85,7 @@
         </div>
     </div>
 
-    <!-- Tablas de información -->
+    <!-- Tablas -->
     <div class="row mt-4">
         <!-- Productos recientes -->
         <div class="col-md-6 mb-4">
@@ -105,17 +105,15 @@
                                 </tr>
                             </thead>
                             <tbody id="productos-recientes">
-                                <tr>
-                                    <td colspan="4" class="text-center">Cargando...</td>
-                                </tr>
+                                <tr><td colspan="4" class="text-center">Cargando...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Productos con stock bajo -->
+
+        <!-- Stock bajo -->
         <div class="col-md-6 mb-4">
             <div class="card shadow">
                 <div class="card-header bg-danger text-white">
@@ -125,16 +123,10 @@
                     <div class="table-responsive">
                         <table class="table table-sm table-hover">
                             <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Stock</th>
-                                    <th>Acción</th>
-                                </tr>
+                                <tr><th>Producto</th><th>Stock</th><th>Acción</th></tr>
                             </thead>
                             <tbody id="productos-stock-bajo">
-                                <tr>
-                                    <td colspan="3" class="text-center">Cargando...</td>
-                                </tr>
+                                <tr><td colspan="3" class="text-center">Cargando...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -142,44 +134,8 @@
             </div>
         </div>
     </div>
-
-    <!-- Acciones rápidas -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow">
-                <div class="card-header bg-dark text-white">
-                    <h6 class="mb-0"><i class="fas fa-bolt me-2"></i>Acciones Rápidas</h6>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3 col-sm-6 mb-2">
-                            <a href="<?= BASE_URL ?>new-products" class="btn btn-outline-primary w-100">
-                                <i class="fas fa-plus me-1"></i> Nuevo Producto
-                            </a>
-                        </div>
-                        <div class="col-md-3 col-sm-6 mb-2">
-                            <a href="<?= BASE_URL ?>new-user" class="btn btn-outline-success w-100">
-                                <i class="fas fa-user-plus me-1"></i> Nuevo Usuario
-                            </a>
-                        </div>
-                        <div class="col-md-3 col-sm-6 mb-2">
-                            <a href="<?= BASE_URL ?>products" class="btn btn-outline-info w-100">
-                                <i class="fas fa-list me-1"></i> Ver Productos
-                            </a>
-                        </div>
-                        <div class="col-md-3 col-sm-6 mb-2">
-                            <a href="<?= BASE_URL ?>users" class="btn btn-outline-warning w-100">
-                                <i class="fas fa-users me-1"></i> Ver Usuarios
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
-<!-- JavaScript para el dashboard -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     cargarEstadisticas();
@@ -189,73 +145,60 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function cargarEstadisticas() {
     fetch('<?= BASE_URL ?>control/dashboardController.php?tipo=obtener_estadisticas')
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => {
             document.getElementById('total-productos').textContent = data.total_productos;
             document.getElementById('total-usuarios').textContent = data.total_usuarios;
             document.getElementById('total-clientes').textContent = data.total_clientes;
             document.getElementById('total-proveedores').textContent = data.total_proveedores;
             document.getElementById('stock-bajo').textContent = data.stock_bajo;
-        })
-        .catch(error => console.error('Error:', error));
+        });
 }
 
 function cargarProductosRecientes() {
     fetch('<?= BASE_URL ?>control/dashboardController.php?tipo=obtener_productos_recientes')
-        .then(response => response.json())
+        .then(res => res.json())
         .then(productos => {
             const tbody = document.getElementById('productos-recientes');
             tbody.innerHTML = '';
-            
             if (productos.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="4" class="text-center">No hay productos recientes</td></tr>';
                 return;
             }
-            
-            productos.forEach(producto => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${producto.nombre}</td>
-                    <td>S/. ${parseFloat(producto.precio).toFixed(2)}</td>
-                    <td><span class="badge ${producto.stock < 10 ? 'bg-danger' : 'bg-success'}">${producto.stock}</span></td>
-                    <td>${producto.proveedor || 'N/A'}</td>
-                `;
-                tbody.appendChild(tr);
+            productos.forEach(p => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${p.nombre}</td>
+                        <td>S/. ${parseFloat(p.precio).toFixed(2)}</td>
+                        <td><span class="badge ${p.stock < 10 ? 'bg-danger' : 'bg-success'}">${p.stock}</span></td>
+                        <td>${p.proveedor || 'N/A'}</td>
+                    </tr>`;
             });
-        })
-        .catch(error => console.error('Error:', error));
+        });
 }
 
 function cargarProductosStockBajo() {
     fetch('<?= BASE_URL ?>control/dashboardController.php?tipo=obtener_stock_bajo')
-        .then(response => response.json())
+        .then(res => res.json())
         .then(productos => {
             const tbody = document.getElementById('productos-stock-bajo');
             tbody.innerHTML = '';
-            
             if (productos.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="3" class="text-center">No hay productos con stock bajo</td></tr>';
                 return;
             }
-            
-            productos.forEach(producto => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${producto.nombre}</td>
-                    <td><span class="badge bg-danger">${producto.stock}</span></td>
-                    <td>
-                        <a href="<?= BASE_URL ?>?view=edit-products&id=${producto.id}" class="btn btn-sm btn-warning">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                    </td>
-                `;
-                tbody.appendChild(tr);
+            productos.forEach(p => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${p.nombre}</td>
+                        <td><span class="badge bg-danger">${p.stock}</span></td>
+                        <td><a href="<?= BASE_URL ?>?view=edit-products&id=${p.id}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a></td>
+                    </tr>`;
             });
-        })
-        .catch(error => console.error('Error:', error));
+        });
 }
 
-// Actualizar cada 30 segundos
+// Actualizar cada 30s
 setInterval(() => {
     cargarEstadisticas();
     cargarProductosRecientes();

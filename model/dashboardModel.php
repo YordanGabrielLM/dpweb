@@ -1,61 +1,80 @@
 <?php
 require_once("../library/conexion.php");
 
-class DashboardModel
-{
+class DashboardModel {
     private $conexion;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->conexion = new Conexion();
         $this->conexion = $this->conexion->connect();
     }
 
-    // 🔹 Estadísticas generales del sistema
-    public function obtenerEstadisticas()
-    {
-        $data = [];
+    // 🔹 1. Obtener estadísticas generales
+    public function obtenerEstadisticas() {
+        $data = [
+            'total_productos' => 0,
+            'total_usuarios' => 0,
+            'total_clientes' => 0,
+            'total_proveedores' => 0,
+            'stock_bajo' => 0
+        ];
 
         // Total de productos
-        $sql = $this->conexion->query("SELECT COUNT(*) AS total FROM producto");
-        $data['productos'] = $sql ? $sql->fetch_object()->total : 0;
+        $query = $this->conexion->query("SELECT COUNT(*) AS total FROM producto");
+        $data['total_productos'] = $query ? $query->fetch_object()->total : 0;
 
-        // Total de categorías
-        $sql = $this->conexion->query("SELECT COUNT(*) AS total FROM categoria");
-        $data['categorias'] = $sql ? $sql->fetch_object()->total : 0;
+        // Total de usuarios
+        $query = $this->conexion->query("SELECT COUNT(*) AS total FROM usuario");
+        $data['total_usuarios'] = $query ? $query->fetch_object()->total : 0;
 
-        // Total de proveedores (si existe tabla)
-        $sql = $this->conexion->query("SELECT COUNT(*) AS total FROM proveedor");
-        $data['proveedores'] = $sql ? $sql->fetch_object()->total : 0;
+        // Total de clientes (si existe tabla cliente)
+        $query = $this->conexion->query("SELECT COUNT(*) AS total FROM cliente");
+        $data['total_clientes'] = $query ? $query->fetch_object()->total : 0;
 
-        // Total de usuarios (si existe tabla)
-        $sql = $this->conexion->query("SELECT COUNT(*) AS total FROM usuario");
-        $data['usuarios'] = $sql ? $sql->fetch_object()->total : 0;
+        // Total de proveedores
+        $query = $this->conexion->query("SELECT COUNT(*) AS total FROM proveedor");
+        $data['total_proveedores'] = $query ? $query->fetch_object()->total : 0;
 
-        // Total de ventas (si existe tabla)
-        $sql = $this->conexion->query("SELECT COUNT(*) AS total FROM venta");
-        $data['ventas'] = $sql ? $sql->fetch_object()->total : 0;
+        // Productos con stock bajo (menos de 10 unidades)
+        $query = $this->conexion->query("SELECT COUNT(*) AS total FROM producto WHERE stock < 10");
+        $data['stock_bajo'] = $query ? $query->fetch_object()->total : 0;
 
-        return ['status' => true, 'data' => $data];
+        return $data;
     }
 
-    // 🔹 Productos con bajo stock (por debajo de 5 unidades, puedes ajustar)
-    public function productosStockBajo()
-    {
-        $arr = [];
+    // 🔹 2. Obtener productos recientes (últimos 10)
+    public function obtenerProductosRecientes() {
+        $productos = [];
         $sql = $this->conexion->query("
-            SELECT p.id, p.codigo, p.nombre, p.stock, c.nombre AS categoria
+            SELECT p.id, p.nombre, p.precio, p.stock, pr.razon_social AS proveedor
             FROM producto p
-            LEFT JOIN categoria c ON p.id_categoria = c.id
-            WHERE p.stock <= 5
-            ORDER BY p.stock ASC
+            LEFT JOIN proveedor pr ON p.id_proveedor = pr.id
+            ORDER BY p.id DESC
             LIMIT 10
         ");
         if ($sql) {
             while ($row = $sql->fetch_object()) {
-                $arr[] = $row;
+                $productos[] = $row;
             }
         }
-        return ['status' => true, 'data' => $arr];
+        return $productos;
+    }
+
+    // 🔹 3. Obtener productos con stock bajo
+    public function obtenerStockBajo() {
+        $productos = [];
+        $sql = $this->conexion->query("
+            SELECT id, nombre, stock
+            FROM producto
+            WHERE stock < 10
+            ORDER BY stock ASC
+            LIMIT 10
+        ");
+        if ($sql) {
+            while ($row = $sql->fetch_object()) {
+                $productos[] = $row;
+            }
+        }
+        return $productos;
     }
 }
