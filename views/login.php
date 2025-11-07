@@ -1,96 +1,131 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <title>Iniciar Sesión</title>
+    <title>Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Lottie CDN (de tu código) -->
-    <script src="https://unpkg.com/lottie-web@5.7.4/build/player/lottie.min.js"></script>
-
-    <!-- Google Font: Inter (para una tipografía más limpia) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
-        /* Usamos Inter como fuente principal */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            background: url("https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg") no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Mantenemos tu animación de "flotar" original */
-        #robot-container {
-            animation: flotar 3s ease-in-out infinite;
+        .login-box {
+            background: rgba(0, 0, 0, 0.6);
+            width: 350px;
+            padding: 40px;
+            border-radius: 10px;
+            color: #fff;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
         }
 
-        @keyframes flotar {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        .login-box h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .login-box .input-box {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .login-box .input-box input {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #fff;
+            outline: none;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .login-box .input-box label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 10px 0;
+            pointer-events: none;
+            transition: 0.5s;
+            color: #ccc;
+        }
+
+        .login-box .input-box input:focus~label,
+        .login-box .input-box input:valid~label {
+            top: -18px;
+            left: 0;
+            color: #03a9f4;
+            font-size: 12px;
+        }
+
+        .login-box button {
+            width: 100%;
+            background: #03a9f4;
+            border: none;
+            padding: 10px;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-box button:hover {
+            background: #0288d1;
+        }
+
+        .login-box a {
+            display: block;
+            text-align: center;
+            color: #ccc;
+            font-size: 14px;
+            text-decoration: none;
+            margin-top: 15px;
+        }
+
+        .login-box a:hover {
+            color: #03a9f4;
         }
     </style>
-    
     <!-- Variable base_url (de tu código) -->
     <script>
-        const base_url = '<?=BASE_URL; ?>';
+        const base_url = '<?= BASE_URL; ?>';
     </script>
 </head>
-<body class="bg-gray-100 flex flex-col justify-center items-center min-h-screen p-4">
 
-    <!-- Animación Lottie del robot (mantenemos tu ID y tamaño) -->
-    <div id="robot-container" class="w-[150px] h-[150px] mb-5"></div>
+<body>
 
-    <!-- Formulario de login (rediseñado con Tailwind) -->
-    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm">
-        
-        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Iniciar Sesión</h2>
-        
-        <!-- Este es un buen lugar para que tu user.js muestre mensajes de error -->
-        <!-- <div id="message-box" class="hidden text-red-600 text-sm text-center mb-4"></div> -->
-
+    <div class="login-box">
+        <h2>Login Here</h2>
         <form action="validar_login.php" method="POST" id="frm_login" name="frm_login">
-            
-            <input 
-                type="text" 
-                name="usuario" 
-                placeholder="Usuario" 
-                id="usuario" 
-                class="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                required>
-            
-            <input 
-                type="password" 
-                name="password" 
-                placeholder="Contraseña" 
-                id="password" 
-                class="w-full p-3 mb-6 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                required>
-            
-            <button 
-                type="button" 
-                class="w-full p-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg" 
-                onclick="iniciar_sesion();">
-                Ingresar
-            </button>
+            <div class="input-box">
+                <input type="text" name="usuario" id="usuario" required>
+                <label>Username</label>
+            </div>
+            <div class="input-box">
+                <input type="password" name="password" id="password" required>
+                <label>Password</label>
+            </div>
+            <button type="button" onclick="iniciar_sesion();">Iniciar Sesión</button>
+            <a href="#">¿Olvidaste tu contraseña?</a>
         </form>
     </div>
-
-    <!-- Script para cargar animación de robot (de tu código) -->
-    <script>
-        lottie.loadAnimation({
-            container: document.getElementById('robot-container'),
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            path: 'https://assets3.lottiefiles.com/packages/lf20_tno6cg2w.json' // Robot animado
-        });
-    </script>
-    
     <!-- Script de tu lógica (de tu código) -->
     <script src="<?php echo BASE_URL; ?>views/function/user.js"></script>
-    
 </body>
+
 </html>
