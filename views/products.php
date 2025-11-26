@@ -9,11 +9,11 @@
                 <th>Nro</th>
                 <th>Código</th>
                 <th>Nombre</th>
-                <th>Detalle</th>
                 <th>Precio</th>
                 <th>Stock</th>
                 <th>Categoria</th>
                 <th>F.V.</th>
+                <th>Codigo Barras</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -25,3 +25,4 @@
 </div>
 
 <script src="<?php echo BASE_URL; ?>views/function/Producto.js"></script>
+<script src="<?php echo BASE_URL; ?>views/function/JsBarcode.all.min.js"></script>

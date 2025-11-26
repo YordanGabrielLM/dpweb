@@ -8,6 +8,26 @@ class ProductsModel
         $this->conexion = new Conexion();
         $this->conexion = $this->conexion->connect();
     }
+    
+    public function verProductos()
+    {
+        $arr_categorias = array();
+        $consulta = "SELECT * FROM producto";
+        $sql = $this->conexion->query($consulta);
+        while ($objeto = $sql->fetch_object()) {
+            array_push($arr_categorias, $objeto);
+        }
+        return $arr_categorias;
+    }
+
+    public function existeProducto($codigo)
+    {
+        $consulta = "SELECT * FROM producto WHERE codigo ='$codigo'";
+        $sql = $this->conexion->query($consulta);
+        return $sql->num_rows;
+    }
+
+
     public function registrar($codigo, $nombre, $detalle, $precio, $stock, $id_categoria, $fecha_vencimiento, $imagen, $id_proveedor)
     {
         $codigo            = $this->conexion->real_escape_string($codigo);
@@ -27,12 +47,7 @@ class ProductsModel
         return 0;
     }
 
-    public function existeProducto($codigo)
-    {
-        $consulta = "SELECT * FROM producto WHERE codigo ='$codigo'";
-        $sql = $this->conexion->query($consulta);
-        return $sql->num_rows;
-    }
+    
 
     public function buscarProductoPorCodigo($codigo)
     {
@@ -41,29 +56,11 @@ class ProductsModel
         return $sql->fetch_object();
     }
 
-    public function mostrarProductos()
+     public function ver($id)
     {
-        $arr_productos = array();
-        $consulta = "SELECT p.*, c.nombre AS categoria
-                 FROM producto p
-                 LEFT JOIN categoria c ON p.id_categoria = c.id";
-        $sql = $this->conexion->query($consulta);
-        if (!$sql) {
-            error_log("Error en query(): " . $this->conexion->error);
-            return $arr_productos;
-        }
-        while ($objeto = $sql->fetch_object()) {
-            array_push($arr_productos, $objeto);
-        }
-        return $arr_productos;
-    }
-
-
-    public function ver($id)
-    {
-        $consulta = "SELECT * FROM producto WHERE id = '$id'";
-        $sql = $this->conexion->query($consulta);
-        return $sql->fetch_object();
+    $consulta = "SELECT * FROM producto WHERE id='$id'";
+     $sql = $this->conexion->query($consulta);
+    return $sql->fetch_object();
     }
 
     public function actualizarProducto($id_producto, $codigo, $nombre, $detalle, $precio, $stock, $id_categoria, $fecha_vencimiento, $imagen, $id_proveedor) {
@@ -93,5 +90,14 @@ class ProductsModel
         $consulta = "SELECT id FROM producto WHERE codigo='$codigo' LIMIT 1";
         $sql = $this->conexion->query($consulta);
         return $sql->num_rows;
+    }
+    public function buscarProductoByNombreOrCodigo($dato){
+        $arr_productos = array();
+        $consulta = "SELECT * FROM producto WHERE codigo LIKE '$dato%' OR nombre LIKE '%$dato%' OR detalle LIKE '%$dato%'";
+        $sql = $this->conexion->query($consulta);
+        while ($objeto = $sql->fetch_object()) {
+            array_push($arr_productos, $objeto);
+        }
+        return $arr_productos;
     }
 }

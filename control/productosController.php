@@ -1,7 +1,9 @@
 <?php
 require_once("../model/ProductsModel.php");
+require_once("../model/CategoriaModel.php");
 
 $objProducto = new ProductsModel();
+$objCategoria = new CategoriaModel();
 
 $tipo = $_GET['tipo'];
 if ($tipo === "registrar") {
@@ -61,10 +63,19 @@ if ($tipo === "registrar") {
     exit;
 }
 
-if ($tipo == "mostrar_productos") {
-    $productos = $objProducto->mostrarProductos();
-    header('Content-Type: application/json');
-    echo json_encode($productos);
+if ($tipo == "ver_productos") {
+    $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
+    $productos = $objProducto->verProductos();
+    $arrProduct = array();
+    if (count($productos)) {
+        foreach ($productos as $producto) {
+            $categoria = $objCategoria->ver($producto->id_categoria);
+            $producto->categoria = $categoria->nombre;
+            array_push($arrProduct, $producto);
+        }
+        $respuesta = array('status' => true, 'msg' => '', 'data' => $arrProduct);
+    }
+    echo json_encode($respuesta);
 }
 
 if ($tipo == "ver") {
@@ -168,4 +179,19 @@ if($tipo == "eliminar"){
         echo json_encode($arrResponse);
         exit;
     }
+}
+if ($tipo == "buscar_producto_venta") {
+    $dato = $_POST['dato'];
+    $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
+    $productos = $objProducto->buscarProductoByNombreOrCodigo($dato);
+    $arrProduct = array();
+    if (count($productos)) {
+        foreach ($productos as $producto) {
+            $categoria = $objCategoria->ver($producto->id_categoria);
+            $producto->categoria = $categoria->nombre;
+            array_push($arrProduct, $producto);
+        }
+        $respuesta = array('status' => true, 'msg' => '', 'data' => $arrProduct);
+    }
+    echo json_encode($respuesta);
 }
