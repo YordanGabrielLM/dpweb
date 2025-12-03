@@ -5,37 +5,23 @@ function validar_form(tipo) {
   let precio = document.getElementById("precio").value;
   let stock = document.getElementById("stock").value;
   let id_categoria = document.getElementById("id_categoria").value;
-  let id_proveedor = document.getElementById("id_proveedor").value;
   let fecha_vencimiento = document.getElementById("fecha_vencimiento").value;
-  let imagen = document.getElementById("imagen").value;
-  let camposRequeridos = [
-    codigo,
-    nombre,
-    detalle,
-    precio,
-    stock,
-    id_categoria,
-    fecha_vencimiento,
-    id_proveedor,
-  ];
-  if (tipo === "nuevo") {
-    camposRequeridos.push(imagen);
-  }
-  if (camposRequeridos.some((campo) => campo === "")) {
-    Swal.fire({
+
+  if (codigo == "" || nombre == "" || detalle == "" || precio == "" || stock == "" || id_categoria == "" || fecha_vencimiento == "") {
+     Swal.fire({
       title: "Error: campos vacíos!",
       icon: "error",
       draggable: true,
     });
-    return;
-  }
-  if (tipo === "nuevo") {
+    return;  
+}
+if (tipo === "nuevo") {
     registrarProducto();
   }
   if (tipo === "actualizar") {
     actualizarProducto();
   }
-}
+  }
 
 if (document.querySelector("#frm_product")) {
   //evita que se envie el formulario
@@ -136,12 +122,12 @@ async function view_producto() {
         cont++;
         contenidot.appendChild(nueva_fila);
       });
-      json.data.forEach(producto => {
-                JsBarcode("#barcode" + producto.id, "" + producto.codigo, {
-                    width: 2,
-                    height: 40
-                });
-            });
+      json.data.forEach((producto) => {
+        JsBarcode("#barcode" + producto.id, "" + producto.codigo, {
+          width: 2,
+          height: 40,
+        });
+      });
     }
   } catch (e) {
     console.log("error en mostrar producto " + e);
@@ -168,70 +154,35 @@ async function edit_producto() {
     );
     json = await respuesta.json();
     if (!json.status) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: json.msg,
-      });
+      alert(json.msg);
       return;
     }
-    // Set simple fields first
-    document.getElementById("codigo").value = json.data.codigo;
-    document.getElementById("nombre").value = json.data.nombre;
-    document.getElementById("detalle").value = json.data.detalle;
-    document.getElementById("precio").value = json.data.precio;
-    document.getElementById("stock").value = json.data.stock;
-    document.getElementById("fecha_vencimiento").value =
-      json.data.fecha_vencimiento;
-    document.getElementById("imagen_actual").value = json.data.imagen;
+    document.getElementById('codigo').value = json.data.codigo;
+    document.getElementById('nombre').value = json.data.nombre;
+    document.getElementById('detalle').value = json.data.detalle;
+    document.getElementById('precio').value = json.data.precio;
+    document.getElementById('stock').value = json.data.stock;
+    document.getElementById('id_categoria').value = json.data.id_categoria;
+    document.getElementById('id_proveedor').value = json.data.id_proveedor;
+    document.getElementById('fecha_vencimiento').value = json.data.fecha_vencimiento;
+    document.getElementById('direccion').value = json.data.direccion;
+    document.getElementById('rol').value = json.data.rol;
 
-    // Load categories and set selected
-    await cargar_categorias();
-    document.getElementById("id_categoria").value = json.data.id_categoria;
-
-    // Load providers and set selected
-    await cargar_proveedores();
-    document.getElementById("id_proveedor").value = json.data.id_proveedor;
-
-    // Display current image if exists
-    if (json.data.imagen && json.data.imagen.trim() !== "") {
-      let imgContainer = document.getElementById("imagen_container");
-      if (!imgContainer) {
-        imgContainer = document.createElement("div");
-        imgContainer.id = "imagen_container";
-        imgContainer.innerHTML = "<label>Imagen Actual:</label><br>";
-        document
-          .getElementById("imagen")
-          .parentNode.insertBefore(
-            imgContainer,
-            document.getElementById("imagen")
-          );
-      }
-      imgContainer.innerHTML =
-        '<label>Imagen Actual:</label><br><img src="' +
-        base_url +
-        json.data.imagen +
-        '" alt="Imagen actual" style="max-width: 200px; max-height: 200px;"><br>';
-    }
   } catch (error) {
     console.log("oops, ocurrio un error" + error);
   }
 }
-
-if (document.querySelector("#frm_edit_producto")) {
-  let frm_edit_producto = document.querySelector("#frm_edit_producto");
-  frm_edit_producto.onsubmit = function (e) {
+if (document.querySelector('#frm_edit_producto')) {
+  let frm_user = document.querySelector('#frm_edit_producto');
+  frm_user.onsubmit = function (e) {
     e.preventDefault();
     validar_form("actualizar");
   };
 }
 
 async function actualizarProducto() {
-  const frm_edit_producto = document.querySelector("#frm_edit_producto");
   const datos = new FormData(frm_edit_producto);
-  let respuesta = await fetch(
-    base_url + "control/productosController.php?tipo=actualizar",
-    {
+  let respuesta = await fetch(base_url + 'control/productosController.php?tipo=actualizar',{
       method: "POST",
       mode: "cors",
       cache: "no-cache",
@@ -240,19 +191,11 @@ async function actualizarProducto() {
   );
   json = await respuesta.json();
   if (!json.status) {
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: "Ops, ocurrio un error al actualizar, contacte con el administrador",
-    });
+    alert("Ops ocurrio un error al actualizar producto, intentalo nuevamente");
     console.log(json.msg);
     return;
   } else {
-    Swal.fire({
-      icon: "success",
-      title: "Éxito",
-      text: json.msg,
-    });
+    alert(json.msg);
   }
 }
 
@@ -372,13 +315,19 @@ async function listar_productos_venta() {
                                 <button onclick="agregar_producto_venta(${
                                   producto.id
                                 })" class="btn btn-primary">Agregar</button>
-                            </div>`;                                                                                                                                                                                        
+                            </div>`;
 
         let nueva_fila = document.createElement("div");
         nueva_fila.className = "div col-md-3 col-sm-6 col-xs-12";
         nueva_fila.innerHTML = producto_list;
         cont++;
         contenidot.appendChild(nueva_fila);
+        let id = document.getElementById('id_producto_venta');
+        let precio = document.getElementById('producto_precio_venta');
+        let cantidad = document.getElementById('producto_cantidad_venta');
+        id.value = producto.id;
+        precio.value = producto.precio;
+        cantidad.value = 1;
       });
     }
   } catch (e) {

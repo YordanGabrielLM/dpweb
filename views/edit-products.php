@@ -93,4 +93,5 @@
     edit_producto();
     cargar_categorias();
     cargar_proveedores();
+    actualizarProducto()
   </script>

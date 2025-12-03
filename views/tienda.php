@@ -6,17 +6,20 @@
                 <h5 class="card-title">Busqueda de Productos</h5>
                 <div class="row mb-3">
                     <div class="col-12">
-                        <input type="text" id="buscar_producto" class="form-control" placeholder="Buscar por nombre o código...">
+                        <input type="text" id="busqueda_venta" class="form-control" placeholder="Buscar por nombre o código..." onkeyup="listar_productos_venta();">
+                        <input type="hidden" id="id_producto_venta">
+                        <input type="hidden" id="producto_precio_venta">
+                        <input type="hidden" id="producto_cantidad_venta" value="1">
                     </div>
                 </div>
                 <div class="row container-fluid" id="productos_venta">
-                    <div class="card m-2 col-3">
+                    <!--<div class="card m-2 col-3">
                         <div class="card-body">
                             <img src="https://www.agenciaeplus.com.br/wp-content/uploads/2021/12/pagina-de-produto.jpg" alt="" width="100%" height="150px">
                             <p class="card-text">Descripcion del producto</p>
                             <button class="btn btn-primary">Agregar</button>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
@@ -62,3 +65,14 @@
     </div>
 </div>
 <script src="<?php echo BASE_URL; ?>views/function/Producto.js"></script>
+<script src="<?php echo BASE_URL; ?>views/function/venta.js"></script>
+<script>
+    let input = document.getElementById("busqueda_venta");
+    input.addEventListener('keydown', (event)=>{
+        if (event.key =='Enter') {
+            agregar_producto_temporal();
+        }
+    })
+</script>
+
+
