@@ -110,7 +110,7 @@
 <body>
 
     <div class="login-box">
-        <h2>Login Here</h2>
+        <h2>Sistema de Ventas</h2>
         <form action="validar_login.php" method="POST" id="frm_login" name="frm_login">
             <div class="input-box">
                 <input type="text" name="usuario" id="usuario" required>
