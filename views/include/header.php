@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yordan</title>
     <link rel="stylesheet" href="<?php echo BASE_URL ?>views/bootstrap/css/bootstrap.min.css">
-    <!-- SweetAlert2 CSS (¡Añade esta línea para las animaciones y estilos!) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 CSS (archivo local) -->
+    <link rel="stylesheet" href="<?php echo BASE_URL ?>views/sweetalert2/sweetalert2.min.css">
     <!-- Font Awesome para iconos (usado en tienda.php, mejor cargarlo globalmente) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script>
@@ -52,8 +52,8 @@
 
 
                 </ul>
-                <!-- Menú de Perfil a la derecha (corregido) -->
-                <ul class="navbar-nav"> <!-- Usar ul.navbar-nav para alinear a la derecha -->
+                <!-- Menú de Perfil a la derecha  -->
+                <ul class="navbar-nav"> 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle me-1"></i> PERFIL</a>
                         <ul class="dropdown-menu dropdown-menu-end">

@@ -91,7 +91,4 @@
   <script src="<?php echo BASE_URL; ?>views/function/Producto.js"></script>
   <script>
     edit_producto();
-    cargar_categorias();
-    cargar_proveedores();
-    actualizarProducto()
   </script>

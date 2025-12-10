@@ -8,20 +8,20 @@ function validar_form(tipo) {
   let fecha_vencimiento = document.getElementById("fecha_vencimiento").value;
 
   if (codigo == "" || nombre == "" || detalle == "" || precio == "" || stock == "" || id_categoria == "" || fecha_vencimiento == "") {
-     Swal.fire({
+    Swal.fire({
       title: "Error: campos vacíos!",
       icon: "error",
       draggable: true,
     });
-    return;  
-}
-if (tipo === "nuevo") {
+    return;
+  }
+  if (tipo === "nuevo") {
     registrarProducto();
   }
   if (tipo === "actualizar") {
     actualizarProducto();
   }
-  }
+}
 
 if (document.querySelector("#frm_product")) {
   //evita que se envie el formulario
@@ -139,6 +139,10 @@ if (document.getElementById("content_productos")) {
 
 async function edit_producto() {
   try {
+    // Primero esperar a que se carguen las categorías y proveedores
+    await cargar_categorias();
+    await cargar_proveedores();
+
     let id_producto = document.getElementById("id_producto").value;
     const datos = new FormData();
     datos.append("id_producto", id_producto);
@@ -165,11 +169,10 @@ async function edit_producto() {
     document.getElementById('id_categoria').value = json.data.id_categoria;
     document.getElementById('id_proveedor').value = json.data.id_proveedor;
     document.getElementById('fecha_vencimiento').value = json.data.fecha_vencimiento;
-    document.getElementById('direccion').value = json.data.direccion;
-    document.getElementById('rol').value = json.data.rol;
+    document.getElementById('imagen_actual').value = json.data.imagen;
 
   } catch (error) {
-    console.log("oops, ocurrio un error" + error);
+    console.log("oops, ocurrio un error: " + error);
   }
 }
 if (document.querySelector('#frm_edit_producto')) {
@@ -182,12 +185,12 @@ if (document.querySelector('#frm_edit_producto')) {
 
 async function actualizarProducto() {
   const datos = new FormData(frm_edit_producto);
-  let respuesta = await fetch(base_url + 'control/productosController.php?tipo=actualizar',{
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      body: datos,
-    }
+  let respuesta = await fetch(base_url + 'control/productosController.php?tipo=actualizar', {
+    method: "POST",
+    mode: "cors",
+    cache: "no-cache",
+    body: datos,
+  }
   );
   json = await respuesta.json();
   if (!json.status) {
@@ -306,15 +309,13 @@ async function listar_productos_venta() {
       json.data.forEach((producto) => {
         let producto_list = ``;
         producto_list += `<div class="card m-2 col-12">
-                                <img src="${
-                                  base_url + producto.imagen
-                                }" alt="" width="100%" height="150px">
+                                <img src="${base_url + producto.imagen
+          }" alt="" width="100%" height="150px">
                                 <p class="card-text">${producto.nombre}</p>
                                 <p>Precio: ${producto.precio}</p>
                                 <p>Stock: ${producto.stock}</p>
-                                <button onclick="agregar_producto_venta(${
-                                  producto.id
-                                })" class="btn btn-primary">Agregar</button>
+                                <button onclick="agregar_producto_venta(${producto.id
+          })" class="btn btn-primary">Agregar</button>
                             </div>`;
 
         let nueva_fila = document.createElement("div");
