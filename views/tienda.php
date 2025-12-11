@@ -41,13 +41,7 @@
                                 </tr>
                             </thead>
                             <tbody id="lista_compra">
-                                <tr>
-                                    <td>Producto 1</td>
-                                    <td>2</td>
-                                    <td>$10.00</td>
-                                    <td>$20.00</td>
-                                    <td><button class="btn btn-danger btn-sm">Eliminar</button></td>
-                                </tr>
+                                <!-- Los productos se cargan dinámicamente -->
                             </tbody>
                         </table>
                     </div>
