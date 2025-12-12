@@ -26,33 +26,26 @@ if ($tipo == "registrarTemporal") {
     echo json_encode($respuesta);
 }
 
-// Listar productos temporales para la lista de compra
-if ($tipo == "listarTemporales") {
-    $respuesta = array('status'=> false, 'msg' => 'No hay productos en la lista');
-    $productos = $objVenta->buscarTemporales();
-    if (count($productos) > 0) {
-        $respuesta = array('status' => true, 'data' => $productos);
+if ($tipo=="listar_venta_temporal") {
+    $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
+    $b_producto = $objVenta->buscarTemporales();
+    if ($b_producto) {
+        $respuesta = array('status' => true, 'data' => $b_producto);
+    }else{
+        $respuesta = array('status' => false, 'msg' => 'no se encontraron datos');
     }
     echo json_encode($respuesta);
 }
 
-// Eliminar producto de temporal_venta
-if ($tipo == "eliminarTemporal") {
-    $respuesta = array('status'=> false, 'msg' => 'Error al eliminar');
+if($tipo=="actualizar_cantidad"){
     $id = $_POST['id'];
-    $resultado = $objVenta->eliminarTemporal($id);
-    if ($resultado) {
-        $respuesta = array('status' => true, 'msg' => 'Producto eliminado de la lista');
-    }
-    echo json_encode($respuesta);
-}
-
-// Limpiar toda la lista temporal
-if ($tipo == "limpiarTemporales") {
-    $respuesta = array('status'=> false, 'msg' => 'Error al limpiar');
-    $resultado = $objVenta->eliminarTemporales();
-    if ($resultado) {
-        $respuesta = array('status' => true, 'msg' => 'Lista limpiada');
+    $cantidad = $_POST['cantidad'];
+    $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
+    $consulta = $objVenta->actualizarCantidadTemporalByid($id, $cantidad);
+    if ($consulta) {
+        $respuesta = array('status' => true, 'msg' => 'success');
+    }else{
+        $respuesta = array('status' => false, 'msg' => 'error');
     }
     echo json_encode($respuesta);
 }

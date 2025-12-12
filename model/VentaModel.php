@@ -21,6 +21,12 @@ class VentaModel
         $sql = $this->conexion->query($consulta);
         return $sql;
     }
+    public function actualizarCantidadTemporalByid($id, $cantidad)
+    {
+        $consulta = "UPDATE temporal_venta SET cantidad='$cantidad' WHERE id='$id'";
+        $sql = $this->conexion->query($consulta);
+        return $sql;
+    }
     public function buscarTemporal($id_producto){
         $consulta = "SELECT * FROM temporal_venta WHERE id_producto='$id_producto'";
         $sql = $this->conexion->query($consulta);
@@ -48,6 +54,9 @@ class VentaModel
         $consulta = "DELETE FROM temporal_venta";
         $sql = $this->conexion->query($consulta);
         return $sql;
+    }
+    public function listarVentas_Temporales(){
+        
     }
 
     //-----------------VENTAS REGISTRADAS (OFICIALES)
