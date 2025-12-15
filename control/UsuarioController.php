@@ -161,3 +161,14 @@ if ($tipo == "ver_proveedor") {
     echo json_encode($proveedor);
     exit;
 }
+if ($tipo == "buscar_por_dni") {
+    $dni = $_POST['dni'];
+    $respuesta = array('status' => false, 'msg' => 'fallo el controlador');
+    $usuarios = $objPersona->buscarPersonaPorNroIdentidad($dni);
+    if ($usuarios) {
+        $respuesta = array('status' => true, 'msg' => '', 'data' => $usuarios);
+    }else {
+        $respuesta = array('status' => false, 'msg' => 'no se encontraron datos');        
+    }
+    echo json_encode($respuesta);
+}

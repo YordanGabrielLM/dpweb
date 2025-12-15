@@ -37,7 +37,7 @@ class VentaModel
     }
     public function buscarTemporales(){
         $arr_temporal = array();
-        $consulta = "SELECT tv.*, p.nombre as nombre_producto FROM temporal_venta tv 
+        $consulta = "SELECT tv.*, p.nombre FROM temporal_venta tv 
                      INNER JOIN producto p ON tv.id_producto = p.id";
         $sql = $this->conexion->query($consulta);
         while ($objeto = $sql->fetch_object()) {
@@ -55,7 +55,7 @@ class VentaModel
         $sql = $this->conexion->query($consulta);
         return $sql;
     }
-    public function listarVentas_Temporales(){
+    public function listarVentas_Temporal(){
         
     }
 
