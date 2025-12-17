@@ -1,4 +1,4 @@
-let productos_venta = {};
+/*let productos_venta = {};
 let id = 2;
 let id2 = 4;
 let producto = {};
@@ -14,12 +14,24 @@ producto2.cantidad = 1;
 
 productos_venta[id] = producto;
 productos_venta[id2] = producto2;
-console.log(productos_venta);
+console.log(productos_venta);*/
 
-async function agregar_producto_temporal() {
-  let id = document.getElementById('id_producto_venta').value;
-  let precio = document.getElementById('producto_precio_venta').value;
-  let cantidad = document.getElementById('producto_cantidad_venta').value;
+async function agregar_producto_temporal(id_product = 0, price = 0, cantidad = 1) {
+  if (id_product == 0) {
+    id = document.getElementById('id_producto_venta').value;
+  } else {
+    id = id_product;
+  }
+  if (price == 0) {
+    precio = document.getElementById('producto_precio_venta').value;
+  } else {
+    precio = price;
+  }
+  if (cantidad == 0) {
+    cantidad = document.getElementById('producto_cantidad_venta').value;
+  } else {
+    cantidad = cantidad;
+  }
   const datos = new FormData();
   datos.append('id_producto', id);
   datos.append('precio', precio);
@@ -39,6 +51,8 @@ async function agregar_producto_temporal() {
         alert("El producto fue actualizado");
       }
     }
+    listar_temporales();
+
   } catch (error) {
     console.log("error en agregar producto temporal" + error);
   }
@@ -65,12 +79,14 @@ async function listar_temporales() {
       });
       document.getElementById('lista_compra').innerHTML = lista_temporal;
       act_subt_general();
+    } else {
+      document.getElementById('lista_compra').innerHTML = '';
+      act_subt_general();
     }
   } catch (error) {
     console.log("error al cargar productos temporales " + error);
   }
 }
-
 async function actualizar_subtotal(id, precio) {
   let cantidad = document.getElementById('cant_' + id).value;
   try {
@@ -112,9 +128,36 @@ async function act_subt_general() {
       document.getElementById('subtotal_general').innerHTML = 'S/. ' + subtotal_general.toFixed(2);
       document.getElementById('igv_general').innerHTML = 'S/. ' + igv;
       document.getElementById('total').innerHTML = 'S/. ' + total;
+    } else {
+      document.getElementById('subtotal_general').innerHTML = 'S/. 0.00';
+      document.getElementById('igv_general').innerHTML = 'S/. 0.00';
+      document.getElementById('total').innerHTML = 'S/. 0.00';
     }
   } catch (error) {
     console.log("error al actualizar subtotal general: " + error);
+  }
+}
+
+// Función para eliminar un producto de la lista temporal
+async function eliminarTemporal(id) {
+  try {
+    const datos = new FormData();
+    datos.append('id', id);
+    let respuesta = await fetch(base_url + 'control/VentaController.php?tipo=eliminar_temporal', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      body: datos
+    });
+    let json = await respuesta.json();
+    if (json.status) {
+      listar_temporales();
+      act_subt_general();
+    } else {
+      alert("Error al eliminar el producto");
+    }
+  } catch (error) {
+    console.log("Error al eliminar temporal: " + error);
   }
 }
 
@@ -138,6 +181,34 @@ async function buscar_cliente_venta() {
     }
   } catch (error) {
     console.log("error al buscar cliente por dni " + error);
+  }
+}
+
+async function registrarVenta() {
+  let id_cliente = document.getElementById('id_cliente_venta').value;
+  let fecha_venta = document.getElementById('fecha_venta').value;
+  if (id_cliente == '' || fecha_venta == '') {
+    return alert("debe completar todos los campos");
+  }
+  try {
+    const datos = new FormData();
+    datos.append('id_cliente', id_cliente);
+    datos.append('fecha_venta', fecha_venta);
+    let respuesta = await fetch(base_url + 'control/VentaController.php?tipo=registrar_venta', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      body: datos
+    });
+    json = await respuesta.json();
+    if (json.status) {
+      alert("Venta registrada con exito");
+      window.location.reload();
+    } else {
+      alert(json.msg);
+    }
+  } catch (error) {
+    console.log("error al registrar venta " + error);
   }
 }
 

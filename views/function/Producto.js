@@ -314,8 +314,7 @@ async function listar_productos_venta() {
                                 <p class="card-text">${producto.nombre}</p>
                                 <p>Precio: ${producto.precio}</p>
                                 <p>Stock: ${producto.stock}</p>
-                                <button onclick="agregar_producto_venta(${producto.id
-          })" class="btn btn-primary">Agregar</button>
+                                <button onclick="agregar_producto_temporal(${producto.id},${producto.precio},1)" class="btn btn-primary">Agregar</button>
                             </div>`;
 
         let nueva_fila = document.createElement("div");
